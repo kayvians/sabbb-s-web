@@ -1,0 +1,6 @@
+{
+  "name": "Ganesha Circle — Komunitas Belajar UTBK",
+  "description": "Platform belajar UTBK/SNBT eksklusif komunitas Discord untuk Try Out, Latsol Drilling, Leaderboard, Library, DWU Review, dan Bank Soal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

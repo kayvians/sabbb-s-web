@@ -1,0 +1,1307 @@
+MASTER PROMPT — WEBSITE UTBK LEARNING COMMUNITY
+
+1. PERAN AI DAN TUJUAN PROYEK
+
+Bertindaklah sebagai Senior Full-Stack Developer, UI/UX Designer, Database Designer, dan Software Architect yang berpengalaman membangun aplikasi edukasi berbasis web.
+
+Saya ingin membangun sebuah website belajar UTBK/SNBT yang digunakan secara eksklusif oleh komunitas kecil melalui Discord.
+
+Website ini bukan platform edukasi komersial dan bukan LMS berskala besar. Website ditujukan untuk membantu anggota komunitas belajar, mengerjakan soal, mengikuti try out, mengevaluasi kemampuan, dan memantau perkembangan belajar masing-masing.
+
+Target pengguna saat ini sekitar 10–11 orang, tetapi sistem harus tetap mendukung penambahan anggota tanpa perlu membangun ulang aplikasi.
+
+Prioritas utama:
+
+1. Fungsionalitas harus berjalan dengan benar.
+2. Tampilan modern, menarik, dan nyaman digunakan.
+3. Sistem mudah dipahami oleh anggota maupun admin.
+4. Pengelolaan soal dan try out harus efisien.
+5. Database terstruktur dan aman.
+6. Tidak menggunakan arsitektur yang terlalu kompleks.
+7. Mudah dipelihara dan dikembangkan di kemudian hari.
+
+Jangan melakukan overengineering. Gunakan pendekatan sederhana, efektif, dan realistis.
+
+---
+
+2. IDENTITAS DAN DESAIN WEBSITE
+
+2.1. Referensi desain
+
+Gunakan gambar-gambar referensi yang telah diberikan sebagai acuan visual.
+
+Karakteristik desain yang diinginkan:
+
+- Modern dan minimalis.
+- Nuansa website akademik dan komunitas.
+- Dominasi warna biru seperti identitas visual ITB.
+- Menggunakan tipografi yang tegas dan mudah dibaca.
+- Dashboard memiliki informasi yang padat tetapi tidak berantakan.
+- Navigasi mudah dipahami.
+- Memiliki karakter visual tersendiri, bukan template dashboard generik.
+
+Jangan menyalin logo atau identitas resmi ITB tanpa izin. Gunakan inspirasi warna dan gaya visualnya saja.
+
+2.2. Color palette
+
+Gunakan palet warna yang terinspirasi dari website ITB:
+
+- Primary Blue: #0757B8
+- Secondary Blue: #0D4FA8
+- Dark Navy: #14244F
+- Deep Navy: #101B45
+- White: #FFFFFF
+- Gold Accent: #D5BF50
+- Light Gray: #F3F5F8
+
+Sesuaikan warna agar tetap harmonis dalam kedua tema.
+
+2.3. Dark Mode dan Light Mode
+
+Website harus menyediakan dua tema:
+
+1. Light Mode.
+2. Dark Mode.
+
+Pengguna dapat mengganti tema melalui tombol Switch Mode.
+
+Pilihan tema disimpan sehingga tetap digunakan ketika pengguna membuka website kembali.
+
+Pastikan seluruh halaman, termasuk halaman soal, tabel, grafik, modal, dan formulir, mengikuti tema yang dipilih.
+
+2.4. Responsivitas
+
+Website wajib responsif untuk:
+
+- Desktop.
+- Laptop.
+- Tablet.
+- Smartphone.
+
+Utamakan pengalaman desktop yang baik, tetapi jangan mengorbankan kenyamanan pengguna smartphone.
+
+Jangan membuat elemen navigasi, soal, atau tabel terpotong pada layar kecil.
+
+---
+
+3. AUTENTIKASI DAN MANAJEMEN PENGGUNA
+
+3.1. Login Discord OAuth2
+
+Gunakan Discord OAuth2 sebagai metode autentikasi utama.
+
+Alur login:
+
+1. Pengguna membuka website.
+2. Pengguna menekan tombol Login with Discord.
+3. Pengguna diarahkan ke halaman otorisasi Discord.
+4. Website menerima identitas pengguna setelah otorisasi berhasil.
+5. Sistem memeriksa apakah pengguna merupakan anggota server Discord komunitas.
+6. Jika pengguna merupakan anggota server, pengguna diperbolehkan masuk.
+7. Jika bukan anggota server, akses ditolak dengan pesan yang jelas.
+
+Gunakan pemeriksaan keanggotaan server melalui Discord API di sisi backend.
+
+Jangan hanya mengandalkan data dari frontend atau identitas Discord tanpa pemeriksaan membership.
+
+Simpan Discord User ID sebagai identitas unik pengguna.
+
+Tidak perlu menyediakan sistem registrasi manual yang terpisah.
+
+3.2. Role pengguna
+
+Sediakan tiga role:
+
+Super Admin
+
+Memiliki akses penuh terhadap seluruh sistem.
+
+Hak akses:
+
+- Mengelola semua pengguna.
+- Mengangkat dan menurunkan Admin.
+- Mengelola Admin.
+- Mengelola soal dan bank soal.
+- Mengelola paket try out.
+- Mengatur timer dan countdown.
+- Mengelola leaderboard.
+- Mengakses seluruh laporan.
+- Menyetujui atau menolak laporan.
+- Mengelola konfigurasi website.
+- Mengakses seluruh data dan aktivitas sistem.
+
+Admin
+
+Memiliki akses untuk mengelola kegiatan pembelajaran.
+
+Hak akses:
+
+- Mengelola soal.
+- Mengelola bank soal.
+- Membuat dan mengelola paket try out.
+- Mengatur jadwal dan countdown.
+- Mengelola materi.
+- Mengelola DWU Review.
+- Memeriksa laporan pengguna.
+- Menyetujui atau menolak laporan sesuai kewenangan.
+- Melihat statistik pengguna.
+
+Admin tidak boleh mengangkat Super Admin atau mengubah konfigurasi kepemilikan sistem.
+
+User
+
+Merupakan anggota komunitas yang menggunakan website untuk belajar.
+
+Hak akses:
+
+- Mengerjakan try out.
+- Melakukan drilling soal.
+- Melihat hasil pengerjaan.
+- Melihat leaderboard.
+- Mengelola target belajar.
+- Mengakses Library.
+- Menggunakan DWU Review.
+- Mengirim feedback.
+- Mengirim laporan.
+- Melihat perkembangan belajar pribadi.
+
+Seluruh role harus diperiksa melalui backend. Jangan hanya menyembunyikan tombol di frontend.
+
+3.3. Pengelolaan anggota
+
+Sediakan halaman manajemen anggota yang menampilkan:
+
+- Username Discord.
+- Discord ID.
+- Foto profil.
+- Role.
+- Tanggal bergabung.
+- Aktivitas terakhir.
+- Statistik belajar.
+
+Jumlah anggota tidak boleh dibatasi hanya 9 atau 10 orang.
+
+---
+
+4. STRUKTUR NAVIGASI WEBSITE
+
+Buat navigasi utama sebagai berikut:
+
+1. Dashboard / Profile.
+2. Try Out.
+3. Latsol / Drilling Soal.
+4. Leaderboard.
+
+Sediakan juga akses ke:
+
+5. Library.
+6. DWU Review.
+7. Question Feedback.
+8. Question Bank.
+
+Admin dan Super Admin mendapatkan menu tambahan untuk pengelolaan sistem.
+
+Gunakan navigasi yang konsisten di seluruh halaman.
+
+---
+
+5. LANDING PAGE DAN LOGIN
+
+Buat landing page dengan karakter visual seperti referensi gambar pertama.
+
+Elemen yang harus tersedia:
+
+- Logo atau identitas komunitas.
+- Tombol Login with Discord.
+- Countdown menuju tanggal penting yang dapat diatur Admin.
+- Gambar atau banner komunitas.
+- Tampilan yang menarik dan tidak terlalu ramai.
+
+Countdown harus dapat dikonfigurasi melalui dashboard Admin, meliputi:
+
+- Nama acara.
+- Tanggal.
+- Jam.
+- Menit.
+- Detik.
+- Zona waktu.
+
+Countdown harus berjalan secara otomatis berdasarkan waktu server, bukan sekadar angka statis di frontend.
+
+---
+
+6. DASHBOARD PENGGUNA
+
+Dashboard merupakan halaman utama setelah login.
+
+Tampilkan informasi berikut:
+
+6.1. Informasi pengguna
+
+- Foto profil Discord.
+- Username Discord.
+- Role.
+- Target skor UTBK.
+- Statistik belajar.
+
+6.2. Grafik Try Out
+
+Tampilkan grafik perkembangan skor try out pengguna dari waktu ke waktu.
+
+Grafik dapat difilter berdasarkan paket try out.
+
+6.3. Target skor
+
+Pengguna dapat menentukan target skor UTBK masing-masing.
+
+Tampilkan target tersebut secara menonjol.
+
+6.4. PR per materi
+
+Sediakan daftar materi yang perlu dievaluasi oleh pengguna.
+
+PENTING:
+
+PR per materi bukan tugas yang diberikan Admin.
+
+Pengguna sendiri yang menentukan materi mana yang masih kurang dikuasai dan perlu dipelajari kembali.
+
+Sediakan status:
+
+- Belum dikerjakan.
+- Sedang dipelajari.
+- Selesai / Dikuasai.
+
+Pengguna dapat mengubah statusnya sendiri.
+
+6.5. Pemahaman subtest
+
+Tampilkan persentase pemahaman pengguna terhadap masing-masing subtest.
+
+Data diambil dari aktivitas drilling, hasil try out, dan evaluasi belajar.
+
+Jangan mengklaim bahwa persentase tersebut merupakan ukuran kemampuan objektif. Berikan label sebagai indikator perkembangan belajar.
+
+6.6. Informasi tambahan
+
+Tampilkan:
+
+- Jumlah try out selesai.
+- Jumlah soal drilling.
+- Jumlah soal yang masih ditandai ragu.
+- Materi yang paling perlu dievaluasi.
+- Aktivitas belajar terakhir.
+
+---
+
+7. SISTEM TRY OUT
+
+Try Out merupakan salah satu fitur utama website.
+
+7.1. Struktur paket
+
+Paket try out dipisahkan berdasarkan penyedia atau nama paket.
+
+Contoh:
+
+- TO Sainsin #1 2027.
+- TO Pahamify #1 2027.
+- TO Inten #1 2027.
+
+Admin dapat membuat paket baru kapan saja.
+
+Setiap paket memiliki:
+
+- Nama paket.
+- Deskripsi.
+- Gambar atau cover.
+- Daftar subtest.
+- Daftar soal.
+- Durasi setiap subtest.
+- Status publikasi.
+- Jadwal atau periode pengerjaan jika diperlukan.
+
+Mode pengerjaan bukan bagian dari pemisahan paket.
+
+7.2. Sistem pengerjaan
+
+Gunakan satu sistem try out dengan dua pilihan cara pengerjaan:
+
+A. Mode Simulasi (Sekali Duduk)
+
+Mode ini digunakan untuk mensimulasikan kondisi ujian sebenarnya.
+
+Aturan:
+
+- Pengguna harus menyelesaikan seluruh rangkaian try out dalam satu sesi.
+- Tidak tersedia tombol pause.
+- Pengguna tidak dapat meninggalkan pengerjaan untuk melanjutkannya di lain waktu.
+- Timer berjalan sesuai durasi masing-masing subtest.
+- Setelah subtest selesai, pengguna langsung melanjutkan ke subtest berikutnya.
+- Setelah seluruh subtest selesai, hasil dapat dilihat.
+
+Jika pengguna keluar, mengalami koneksi terputus, atau menutup browser, sistem harus menangani sesi secara konsisten berdasarkan waktu server.
+
+Jangan sampai pengguna mendapatkan tambahan waktu hanya dengan me-refresh halaman.
+
+B. Mode Bertahap
+
+Mode ini memungkinkan pengguna mengerjakan try out secara bertahap.
+
+Aturan:
+
+- Pengguna tidak dapat melakukan pause ketika sedang mengerjakan sebuah subtest.
+- Timer subtest tetap berjalan.
+- Setelah satu subtest selesai, pengguna boleh beristirahat.
+- Pengguna dapat melanjutkan subtest berikutnya di waktu lain.
+- Jawaban subtest yang sudah selesai harus tersimpan.
+- Pengguna tidak dapat kembali mengubah jawaban subtest yang sudah dikunci.
+- Setiap subtest memiliki timer tersendiri.
+
+Dengan demikian, istirahat hanya diperbolehkan setelah satu subtest selesai, bukan ketika pengerjaan subtest sedang berlangsung.
+
+Kedua mode harus menggunakan paket dan bank soal yang sama.
+
+7.3. Timer
+
+Gunakan timer per subtest.
+
+Admin dapat mengatur:
+
+- Durasi masing-masing subtest.
+- Urutan subtest.
+- Waktu mulai dan berakhirnya paket jika diperlukan.
+
+Timer harus menggunakan waktu server sebagai sumber utama.
+
+Simpan status sesi dan waktu pengerjaan secara berkala.
+
+Pastikan timer tidak dapat dimanipulasi dengan mengubah jam perangkat atau me-refresh browser.
+
+7.4. Tampilan pengerjaan soal
+
+Gunakan referensi gambar halaman pengerjaan soal.
+
+Layout yang diinginkan:
+
+Area kiri:
+
+- Nama paket.
+- Nama subtest.
+- Nomor soal.
+- Pertanyaan.
+- Gambar atau ilustrasi soal.
+- Pilihan jawaban.
+
+Area kanan:
+
+- Navigasi nomor soal.
+- Indikator status soal.
+- Timer.
+
+Sediakan navigasi nomor soal yang dapat diklik.
+
+7.5. Status soal
+
+Gunakan tiga status visual utama:
+
+1. Belum dijawab.
+2. Terjawab.
+3. Ragu-ragu.
+
+Warna indikator:
+
+- Belum dijawab: putih atau abu-abu.
+- Terjawab: hijau.
+- Ragu-ragu: kuning.
+
+Status ragu-ragu harus menjadi penanda prioritas dan tetap terlihat walaupun pengguna sudah menjawab soal tersebut.
+
+Sediakan tombol untuk mengaktifkan dan menonaktifkan penanda ragu.
+
+7.6. Penyimpanan jawaban
+
+Jawaban harus tersimpan secara otomatis.
+
+Gunakan mekanisme autosave agar jawaban tidak hilang ketika:
+
+- Halaman ter-refresh.
+- Koneksi terputus sementara.
+- Browser mengalami gangguan.
+
+Jangan mengandalkan local storage sebagai satu-satunya tempat menyimpan jawaban.
+
+Backend harus menjadi sumber data utama.
+
+7.7. Hasil Try Out
+
+Setelah seluruh try out selesai, pengguna dapat langsung melihat hasilnya.
+
+Tidak perlu menunggu seluruh anggota komunitas menyelesaikan try out.
+
+Tampilkan:
+
+- Skor UTBK.
+- Jumlah benar.
+- Jumlah salah.
+- Jumlah kosong.
+- Persentase pengerjaan.
+- Durasi pengerjaan.
+- Nilai setiap subtest.
+- Analisis materi yang masih lemah.
+
+Gunakan sistem penilaian UTBK yang dapat dikonfigurasi.
+
+Jangan mengarang atau mengklaim rumus konversi skor sebagai rumus resmi UTBK jika belum diverifikasi.
+
+Pisahkan data jawaban mentah dengan hasil konversi skor agar metode penilaian dapat diperbarui.
+
+Pembahasan dapat ditampilkan sesuai preferensi pengguna:
+
+- Langsung setelah menjawab.
+- Di akhir pengerjaan.
+
+Dalam mode try out, pembahasan tidak boleh membocorkan kunci jawaban sebelum waktu subtest terkait selesai.
+
+---
+
+8. LEADERBOARD
+
+Leaderboard harus dipisahkan berdasarkan paket try out.
+
+Contoh:
+
+- Leaderboard TO Sainsin #1 2027.
+- Leaderboard TO Pahamify #1 2027.
+- Leaderboard TO Inten #1 2027.
+
+PENTING: Mode pengerjaan tidak menjadi faktor pemisah leaderboard.
+
+Pengguna yang mengerjakan Mode Simulasi dan Mode Bertahap masuk ke leaderboard yang sama selama mengerjakan paket yang sama.
+
+Aturan leaderboard:
+
+1. Hanya hasil try out yang sudah selesai yang dihitung.
+2. Setiap pengguna ditampilkan berdasarkan skor terbaiknya pada paket tersebut.
+3. Jika seorang pengguna mengerjakan paket yang sama berkali-kali, sistem tetap menampilkan skor tertingginya.
+4. Jika terdapat skor yang sama, gunakan total waktu aktif pengerjaan tercepat sebagai penentu peringkat.
+5. Waktu istirahat pada Mode Bertahap tidak dihitung sebagai waktu aktif.
+6. Hasil yang belum selesai tidak masuk leaderboard.
+7. Leaderboard diperbarui secara otomatis setelah hasil pengerjaan selesai diproses.
+
+Tampilkan minimal 10 peringkat terbaik.
+
+Desain leaderboard harus menarik dengan penekanan pada:
+
+- Peringkat pertama.
+- Peringkat kedua.
+- Peringkat ketiga.
+- Username Discord.
+- Skor.
+
+Jangan membuat leaderboard terpisah berdasarkan mode.
+
+---
+
+9. SISTEM LATSOL / DRILLING SOAL
+
+Fitur drilling digunakan untuk melatih kemampuan pengguna berdasarkan materi tertentu.
+
+9.1. Pemilihan soal
+
+Pengguna dapat:
+
+- Memilih subtest.
+- Memilih materi.
+- Memilih jumlah soal.
+- Mengerjakan soal secara acak.
+- Mengulang soal yang pernah dikerjakan.
+
+9.2. Sistem pengerjaan
+
+Tampilkan soal dengan layout yang konsisten dengan halaman Try Out.
+
+Sediakan:
+
+- Nomor soal.
+- Pertanyaan.
+- Pilihan jawaban.
+- Tombol ragu-ragu.
+- Tombol soal sebelumnya dan berikutnya.
+- Indikator progres.
+
+9.3. Pembahasan
+
+Pengguna dapat memilih:
+
+- Pembahasan langsung setelah menjawab.
+- Pembahasan di akhir sesi drilling.
+
+Pembahasan harus menampilkan:
+
+- Jawaban yang benar.
+- Jawaban pengguna.
+- Penjelasan.
+- Langkah penyelesaian.
+- Rumus jika diperlukan.
+- Gambar atau ilustrasi jika tersedia.
+
+Gunakan Markdown dan LaTeX untuk menampilkan pembahasan.
+
+9.4. Riwayat drilling
+
+Simpan riwayat pengerjaan setiap pengguna.
+
+Tampilkan:
+
+- Soal yang pernah dikerjakan.
+- Jawaban pengguna.
+- Status benar atau salah.
+- Status ragu.
+- Waktu pengerjaan.
+- Status pemahaman.
+
+Pengguna dapat mengulang soal yang sebelumnya salah atau masih diragukan.
+
+---
+
+10. SISTEM INDIKATOR RAGU-RAGU DAN PEMAHAMAN SOAL
+
+Fitur ini merupakan salah satu fitur penting dan harus diterapkan pada Try Out maupun Drilling.
+
+Tujuannya adalah membedakan soal yang benar-benar dipahami dengan soal yang dijawab berdasarkan tebakan, feeling, atau keberuntungan.
+
+10.1. Penanda ragu
+
+Pengguna dapat menandai soal sebagai Ragu-ragu.
+
+Penanda tersebut tidak boleh otomatis hilang hanya karena:
+
+- Pengguna menjawab dengan benar.
+- Pengguna menyelesaikan sesi.
+- Pengguna membuka pembahasan.
+- Pengguna mengulang soal.
+
+Penanda tetap aktif sampai pengguna secara eksplisit menyatakan bahwa dirinya sudah memahami soal tersebut.
+
+10.2. Status pemahaman
+
+Sediakan mekanisme:
+
+- Ragu / Belum paham.
+- Sudah dipelajari.
+- Sudah paham.
+
+Ketika pengguna menekan tombol "Saya Sudah Paham", sistem:
+
+1. Menghapus status ragu aktif.
+2. Mencatat waktu konfirmasi.
+3. Menyimpan riwayat perubahan status.
+4. Mempertahankan histori bahwa soal tersebut sebelumnya pernah diragukan.
+
+Dengan begitu, data lama tidak hilang.
+
+10.3. Riwayat pemahaman
+
+Simpan data berdasarkan kombinasi pengguna dan soal.
+
+Tampilkan:
+
+- Pernah ditandai ragu atau tidak.
+- Berapa kali ditandai ragu.
+- Berapa kali dijawab benar.
+- Berapa kali dijawab salah.
+- Kapan terakhir dipelajari.
+- Kapan pengguna menyatakan sudah paham.
+
+Status pemahaman harus bersifat personal.
+
+Jika pengguna A sudah memahami soal, status pengguna B tidak boleh ikut berubah.
+
+10.4. Evaluasi
+
+Gunakan data tersebut untuk membantu pengguna menemukan:
+
+- Soal yang sering salah.
+- Soal yang sering ditebak.
+- Soal yang benar tetapi masih diragukan.
+- Soal yang sudah dipahami.
+
+Jangan menyimpulkan bahwa semua jawaban benar berarti pengguna benar-benar memahami materi.
+
+---
+
+11. QUESTION BANK DAN SISTEM INPUT SOAL
+
+Question Bank digunakan sebagai tempat penyimpanan seluruh soal yang dapat digunakan dalam Try Out maupun Drilling.
+
+Admin membutuhkan sistem input soal secara massal.
+
+Jangan membuat Admin harus memasukkan soal satu per satu secara manual sebagai satu-satunya metode.
+
+11.1. Format input
+
+Gunakan format JSON yang dapat memuat:
+
+- Teks soal.
+- Pilihan jawaban.
+- Kunci jawaban.
+- Pembahasan.
+- Materi.
+- Subtest.
+- Gambar.
+- Rumus matematika.
+- Metadata soal.
+
+Format soal harus mendukung Markdown dan LaTeX.
+
+Contoh struktur JSON:
+
+{
+  "title": "Latihan Penalaran Umum",
+  "subject": "Penalaran Umum",
+  "questions": [
+    {
+      "id": "PU001",
+      "type": "single_choice",
+      "topic": "Logika",
+      "difficulty": "medium",
+      "question": "Jika semua A adalah B dan semua B adalah C, maka...",
+      "options": [
+        {
+          "key": "A",
+          "content": "Semua A adalah C"
+        },
+        {
+          "key": "B",
+          "content": "Semua C adalah A"
+        },
+        {
+          "key": "C",
+          "content": "Tidak ada A yang C"
+        }
+      ],
+      "correct_answer": ["A"],
+      "explanation": "Karena semua A termasuk B dan semua B termasuk C, maka semua A termasuk C.",
+      "solution": "Penjelasan langkah demi langkah jika tersedia."
+    }
+  ]
+}
+
+Struktur tersebut merupakan contoh awal. Kembangkan schema yang konsisten dan terdokumentasi.
+
+11.2. AI-assisted question import
+
+Integrasikan AI menggunakan Gemini API atau OpenAI API.
+
+Tujuan AI adalah membantu Admin mengubah materi soal menjadi struktur data JSON yang valid.
+
+Alur:
+
+1. Admin memasukkan atau mengunggah materi soal.
+2. Admin memberikan data berupa teks, JSON, Markdown, atau sumber yang didukung sistem.
+3. AI mengekstrak soal.
+4. AI memisahkan pertanyaan, pilihan jawaban, kunci, dan pembahasan.
+5. AI mengidentifikasi subtest dan materi jika memungkinkan.
+6. AI menghasilkan JSON sesuai schema.
+7. Sistem melakukan validasi.
+8. Admin melihat preview seluruh soal.
+9. Admin dapat mengedit hasil ekstraksi.
+10. Admin menyetujui proses import.
+11. Soal masuk ke Question Bank.
+
+11.3. Validasi
+
+Sistem harus memeriksa:
+
+- Struktur JSON.
+- Kelengkapan pertanyaan.
+- Kelengkapan pilihan jawaban.
+- Kunci jawaban.
+- Pembahasan.
+- Duplikasi soal.
+- Format Markdown.
+- Format LaTeX.
+- Gambar yang digunakan.
+
+AI tidak boleh mengarang kunci jawaban atau pembahasan yang tidak tersedia pada sumber tanpa memberi peringatan.
+
+Jika AI tidak yakin, tandai bagian tersebut untuk pemeriksaan manual Admin.
+
+Jangan langsung memasukkan hasil ekstraksi AI ke database tanpa persetujuan Admin.
+
+11.4. Pengelolaan Question Bank
+
+Admin dapat:
+
+- Menambahkan soal.
+- Mengedit soal.
+- Menghapus soal.
+- Mengelompokkan soal berdasarkan subtest.
+- Mengelompokkan soal berdasarkan materi.
+- Mengelompokkan berdasarkan tingkat kesulitan.
+- Menggunakan soal untuk Try Out.
+- Menggunakan soal untuk Drilling.
+
+Pastikan soal dapat digunakan kembali tanpa harus diduplikasi secara tidak perlu.
+
+---
+
+12. LIBRARY
+
+Library berfungsi sebagai pusat akses materi pembelajaran.
+
+Untuk tahap awal, Library menggunakan Google Drive.
+
+Admin dapat memasukkan:
+
+- Nama materi.
+- Deskripsi.
+- Kategori.
+- Subtest.
+- Link Google Drive.
+
+Pengguna dapat membuka materi melalui link yang disediakan.
+
+Jangan membangun sistem penyimpanan file yang kompleks jika belum diperlukan.
+
+Pastikan link dapat dikelola oleh Admin dan hanya ditampilkan kepada anggota yang sudah login.
+
+---
+
+13. DWU REVIEW
+
+DWU Review merupakan sistem evaluasi dua arah antara tutor dan anggota.
+
+Fitur ini bukan sekadar formulir penilaian.
+
+Tujuannya adalah meningkatkan kualitas pembelajaran dan membantu anggota mengetahui kelemahan mereka.
+
+13.1. Feedback anggota kepada tutor
+
+Anggota dapat memberikan penilaian terhadap tutor.
+
+Aspek penilaian dapat mencakup:
+
+- Kejelasan penyampaian materi.
+- Penguasaan materi.
+- Kemampuan menjelaskan soal.
+- Interaksi dengan anggota.
+- Efektivitas pembelajaran.
+
+Sediakan kolom komentar.
+
+13.2. Feedback tutor kepada anggota
+
+Tutor dapat memberikan evaluasi terhadap anggota.
+
+Aspek evaluasi:
+
+- Pemahaman materi.
+- Keaktifan.
+- Konsistensi belajar.
+- Kemampuan menyelesaikan soal.
+- Perkembangan kemampuan.
+
+13.3. Evaluasi materi dan soal
+
+DWU Review juga digunakan untuk mengulas:
+
+- Materi yang belum dikuasai.
+- Soal yang masih sulit.
+- Kesalahan yang sering dilakukan.
+- Materi yang perlu dipelajari kembali.
+
+Data evaluasi dapat terhubung dengan hasil drilling dan try out.
+
+13.4. Privasi
+
+Feedback yang bersifat pribadi tidak boleh ditampilkan secara bebas kepada semua anggota.
+
+Atur akses berdasarkan role dan kepemilikan data.
+
+---
+
+14. QUESTION FEEDBACK
+
+Sediakan fitur agar pengguna dapat melaporkan masalah pada soal.
+
+Contoh:
+
+- Kunci jawaban diduga salah.
+- Pembahasan kurang jelas.
+- Soal memiliki kesalahan penulisan.
+- Gambar tidak muncul.
+- Pilihan jawaban bermasalah.
+- Soal ambigu.
+
+Setiap laporan memiliki:
+
+- Identitas pelapor.
+- Identitas soal.
+- Jenis masalah.
+- Deskripsi.
+- Waktu laporan.
+- Status laporan.
+
+Status:
+
+- Pending.
+- Sedang ditinjau.
+- Disetujui.
+- Ditolak.
+- Selesai.
+
+Admin dapat memeriksa laporan dan memberikan tindak lanjut.
+
+Laporan tidak boleh otomatis dianggap selesai hanya karena dikirim oleh pengguna.
+
+Laporan baru dianggap selesai setelah mendapatkan persetujuan Admin.
+
+---
+
+15. COUNTDOWN DAN PENGELOLAAN JADWAL
+
+Admin memiliki kontrol penuh terhadap countdown.
+
+Admin dapat:
+
+- Membuat countdown.
+- Mengedit countdown.
+- Menghapus countdown.
+- Menentukan tanggal dan jam.
+- Mengubah nama acara.
+- Mengaktifkan atau menonaktifkan countdown.
+
+Countdown dapat digunakan untuk:
+
+- Jadwal try out.
+- Ujian internal.
+- Acara komunitas.
+- Target belajar bersama.
+
+Perubahan harus langsung tercermin pada tampilan pengguna.
+
+---
+
+16. HALAMAN PROFILE DAN STATISTIK
+
+Halaman Profile menampilkan perkembangan individu.
+
+Komponen:
+
+1. Foto profil Discord.
+2. Username.
+3. Target skor UTBK.
+4. Grafik perkembangan try out.
+5. PR per materi.
+6. Persentase pemahaman subtest.
+7. Statistik drilling.
+8. Riwayat try out.
+9. Riwayat soal ragu.
+10. Jumlah soal yang sudah dikuasai.
+
+Buat visualisasi grafik yang informatif dan mudah dipahami.
+
+Pengguna hanya dapat melihat statistik pribadi, kecuali data yang memang ditujukan untuk publik seperti leaderboard.
+
+---
+
+17. ADMIN DASHBOARD
+
+Buat dashboard khusus Admin dan Super Admin.
+
+Menu pengelolaan:
+
+- Overview.
+- Users.
+- Question Bank.
+- Import Soal AI.
+- Try Out Packages.
+- Drill Management.
+- Countdown.
+- Library.
+- DWU Review.
+- Question Feedback.
+- Reports.
+- Website Settings.
+
+Overview menampilkan:
+
+- Jumlah anggota.
+- Jumlah soal.
+- Jumlah paket try out.
+- Jumlah try out yang selesai.
+- Aktivitas terbaru.
+- Laporan yang menunggu persetujuan.
+
+Buat tampilan pengelolaan yang sederhana dan mudah digunakan.
+
+---
+
+18. DATABASE DAN ARSITEKTUR
+
+Buat database yang terstruktur dan mudah dikembangkan.
+
+Entitas yang setidaknya perlu dipertimbangkan:
+
+- users
+- user_roles
+- tryout_packages
+- tryout_subtests
+- questions
+- question_options
+- question_explanations
+- tryout_sessions
+- tryout_answers
+- drill_sessions
+- drill_answers
+- user_question_mastery
+- user_question_history
+- leaderboard_records
+- study_targets
+- study_materials
+- library_links
+- dwu_reviews
+- tutor_feedback
+- member_feedback
+- question_reports
+- countdown_events
+- system_settings
+- activity_logs
+
+Buat relasi antarentitas secara tepat.
+
+Gunakan foreign key dan index yang memang dibutuhkan.
+
+Hindari menyimpan seluruh data dalam satu tabel besar.
+
+Pastikan data pengguna tidak tercampur.
+
+18.1. Hosting
+
+Hosting yang akan digunakan belum ditentukan. Kemungkinan hosting dibeli melalui platform marketplace.
+
+Karena itu:
+
+- Jangan mengunci aplikasi pada layanan hosting tertentu.
+- Hindari ketergantungan pada infrastruktur mahal.
+- Gunakan teknologi yang dapat dijalankan pada hosting yang realistis.
+- Jika shared hosting, pertimbangkan kompatibilitas PHP dan MySQL.
+- Jika VPS tersedia, pertimbangkan teknologi backend lain apabila memang lebih sesuai.
+- Pastikan konfigurasi dapat disesuaikan setelah informasi hosting diketahui.
+
+Sebelum menentukan stack final, jelaskan kebutuhan minimum hosting dan pilihan teknologi yang paling sederhana.
+
+Jangan memaksakan arsitektur microservices, Kubernetes, atau infrastruktur enterprise.
+
+18.2. Keamanan
+
+Terapkan:
+
+- Server-side authentication.
+- Role-based access control.
+- Validasi input.
+- Proteksi SQL injection.
+- Proteksi XSS.
+- Proteksi CSRF jika relevan.
+- Rate limiting pada endpoint sensitif.
+- Keamanan API key.
+- Environment variables.
+- Validasi akses Discord.
+- Backup database.
+
+API key Gemini atau OpenAI tidak boleh ditampilkan di frontend.
+
+---
+
+19. PENGALAMAN PENGGUNA
+
+Pastikan pengalaman pengguna terasa sederhana.
+
+Contoh:
+
+- Pengguna dapat langsung menemukan paket try out.
+- Pengguna dapat melihat materi yang perlu dipelajari.
+- Pengguna dapat mengerjakan drilling tanpa banyak langkah.
+- Pengguna tidak kehilangan jawaban.
+- Pengguna dapat memahami perkembangan belajarnya.
+- Pengguna dapat mengirim feedback dengan mudah.
+
+Berikan notifikasi yang jelas ketika:
+
+- Jawaban tersimpan.
+- Waktu hampir habis.
+- Subtest selesai.
+- Try out selesai.
+- Laporan berhasil dikirim.
+- Laporan disetujui atau ditolak.
+- Status pemahaman soal berubah.
+
+Jangan membuat terlalu banyak popup atau notifikasi yang mengganggu.
+
+---
+
+20. ATURAN PENTING DALAM PENGEMBANGAN
+
+Ikuti aturan berikut:
+
+1. Jangan menghilangkan fitur yang telah disebutkan tanpa persetujuan.
+2. Jangan membuat fitur yang hanya terlihat berfungsi tetapi sebenarnya tidak terhubung ke backend.
+3. Jangan menggunakan data dummy sebagai pengganti database pada aplikasi final.
+4. Jangan membuat tombol yang tidak memiliki fungsi.
+5. Jangan membuat halaman yang hanya berupa desain statis.
+6. Jangan mengarang data skor UTBK.
+7. Jangan mengizinkan pengguna mengubah jawaban setelah subtest dikunci.
+8. Jangan mengizinkan pengguna memanipulasi timer melalui frontend.
+9. Jangan menghapus riwayat status ragu ketika pengguna menyatakan sudah paham.
+10. Jangan memasukkan soal hasil ekstraksi AI ke Question Bank tanpa validasi dan persetujuan Admin.
+11. Jangan membuat leaderboard terpisah berdasarkan mode pengerjaan.
+12. Jangan membuat sistem terlalu kompleks untuk kebutuhan komunitas kecil.
+13. Pastikan semua halaman memiliki tampilan yang konsisten.
+14. Pastikan website dapat digunakan dengan baik pada smartphone.
+15. Dokumentasikan konfigurasi dan cara menjalankan aplikasi.
+
+---
+
+21. TAHAPAN PENGERJAAN
+
+Jangan langsung membangun semua fitur sekaligus tanpa perencanaan.
+
+Kerjakan secara bertahap:
+
+Tahap 1 — Analisis dan perencanaan
+
+- Analisis kebutuhan.
+- Tentukan teknologi.
+- Rancang database.
+- Buat struktur folder.
+- Buat arsitektur sederhana.
+- Identifikasi kebutuhan hosting.
+- Buat peta navigasi.
+
+Sebelum memulai implementasi, jelaskan pilihan teknologi dan alasan pemilihannya.
+
+Tahap 2 — UI/UX
+
+Buat seluruh halaman utama:
+
+- Landing page.
+- Login.
+- Dashboard.
+- Profile.
+- Try Out.
+- Drilling.
+- Leaderboard.
+- Library.
+- DWU Review.
+- Question Bank.
+- Admin Dashboard.
+
+Gunakan desain yang konsisten dengan referensi.
+
+Tahap 3 — Backend dan database
+
+Implementasikan:
+
+- Database.
+- Discord OAuth2.
+- Verifikasi server Discord.
+- Role pengguna.
+- Session management.
+- API.
+- Penyimpanan data.
+
+Tahap 4 — Try Out dan Drilling
+
+Implementasikan:
+
+- Pengelolaan paket.
+- Pengelolaan soal.
+- Timer.
+- Mode Simulasi.
+- Mode Bertahap.
+- Autosave.
+- Skoring.
+- Pembahasan.
+- Indikator ragu.
+- Riwayat pemahaman.
+
+Tahap 5 — Fitur komunitas
+
+Implementasikan:
+
+- Leaderboard.
+- Library.
+- DWU Review.
+- Question Feedback.
+- Laporan dan persetujuan Admin.
+- Countdown.
+
+Tahap 6 — Pengujian
+
+Uji seluruh fitur.
+
+Pastikan:
+
+- Login Discord berfungsi.
+- Verifikasi anggota berfungsi.
+- Role tidak dapat dimanipulasi.
+- Timer akurat.
+- Mode Simulasi tidak dapat dipause.
+- Mode Bertahap hanya dapat beristirahat setelah subtest selesai.
+- Jawaban tersimpan.
+- Hasil skor benar.
+- Leaderboard menggunakan skor terbaik.
+- Mode tidak memisahkan leaderboard.
+- Penanda ragu tersimpan.
+- Status pemahaman tersimpan.
+- Import JSON berjalan.
+- AI extraction berjalan.
+- Laporan membutuhkan persetujuan Admin.
+
+Tahap 7 — Deployment
+
+Siapkan:
+
+- Environment variables.
+- Database production.
+- Konfigurasi Discord OAuth2.
+- Konfigurasi API AI.
+- Deployment.
+- Backup.
+- Dokumentasi penggunaan.
+
+---
+
+22. KRITERIA WEBSITE DINYATAKAN SELESAI
+
+Website belum boleh dianggap selesai hanya karena tampilannya sudah bagus.
+
+Website dinyatakan selesai apabila:
+
+1. Semua role dapat login dan mengakses halaman sesuai kewenangannya.
+2. Admin dapat mengelola soal secara massal.
+3. Admin dapat membuat paket try out.
+4. Pengguna dapat mengerjakan try out menggunakan kedua cara pengerjaan.
+5. Timer berjalan dengan benar.
+6. Hasil try out dapat dilihat langsung setelah selesai.
+7. Leaderboard bekerja berdasarkan paket, tanpa membedakan mode.
+8. Drilling dapat dilakukan berdasarkan materi.
+9. Penanda ragu dapat disimpan dan hanya dihapus setelah konfirmasi pemahaman pengguna.
+10. Riwayat pemahaman tidak hilang.
+11. Library dapat mengarahkan pengguna ke Google Drive.
+12. DWU Review berjalan dua arah.
+13. Laporan membutuhkan persetujuan Admin.
+14. Tampilan Dark Mode dan Light Mode berjalan.
+15. Website responsif.
+16. Tidak ada tombol utama yang tidak berfungsi.
+17. Data tersimpan dengan benar.
+18. Tidak terdapat masalah keamanan yang kritis.
+
+---
+
+23. INSTRUKSI TERAKHIR UNTUK AI CODING AGENT
+
+Saya ingin Anda mengembangkan proyek ini secara serius tetapi tetap sederhana.
+
+Jangan menganggap prompt ini sebagai sekadar inspirasi desain. Seluruh kebutuhan fungsional di dalamnya merupakan spesifikasi produk yang harus diperhatikan.
+
+Jika ada keputusan teknis yang belum ditentukan:
+
+- Pilih solusi yang paling sederhana dan masuk akal.
+- Jelaskan alasan pemilihannya.
+- Jangan menambahkan teknologi yang tidak diperlukan.
+- Jangan mengubah aturan bisnis tanpa persetujuan.
+
+Jika ada informasi yang benar-benar dibutuhkan tetapi belum tersedia, ajukan pertanyaan yang spesifik dan relevan.
+
+Jangan menanyakan ulang keputusan yang sudah dijelaskan di dalam prompt.
+
+Jika repository proyek sudah tersedia:
+
+- Periksa struktur proyek terlebih dahulu.
+- Periksa teknologi yang sudah digunakan.
+- Jangan menghapus atau menimpa pekerjaan yang sudah ada tanpa alasan.
+- Lakukan perubahan secara bertahap.
+
+Jika memulai dari nol:
+
+- Bangun fondasi aplikasi terlebih dahulu.
+- Pastikan setiap tahap dapat dijalankan sebelum melanjutkan.
+- Jangan menghasilkan kode yang hanya berupa mockup.
+
+Berikan laporan singkat setiap tahap yang menjelaskan:
+
+1. Apa yang telah dibuat.
+2. Apa yang sudah berfungsi.
+3. Apa yang masih belum selesai.
+4. Bagaimana cara mengujinya.
+5. Apa tahap berikutnya.
+
+Tujuan akhir: membangun website belajar UTBK eksklusif untuk komunitas Discord yang modern, fungsional, mudah digunakan, dan membantu setiap anggota memahami kemampuan serta kekurangan belajarnya masing-masing.
+
+Utamakan kualitas pengalaman belajar, bukan kompleksitas teknologi.
+ADDITIONAL REQUIREMENT — VISUAL ASSET MANAGEMENT & DESIGN FIDELITY
+
+A. Design Reference Fidelity
+
+Gunakan seluruh gambar mockup yang diberikan sebagai referensi utama dalam membangun UI.
+
+Usahakan mempertahankan:
+
+- Komposisi dan layout.
+- Posisi elemen.
+- Gaya ilustrasi.
+- Bentuk komponen.
+- Identitas warna.
+- Karakter visual setiap halaman.
+
+Jangan mengganti desain dengan template dashboard generik.
+
+Jika aset gambar asli tidak tersedia, gunakan placeholder yang sesuai dengan gaya mockup. Jangan menganggap placeholder sebagai aset final.
+
+B. Visual Customization
+
+Buat fitur pengelolaan aset visual pada Admin Dashboard agar Super Admin dan Admin dapat mengganti aset tanpa mengubah source code.
+
+Aset yang dapat dikelola:
+
+- Logo komunitas.
+- Landing page banner.
+- Dashboard illustration.
+- Background image.
+- Try Out package cover.
+- Library thumbnail.
+- Icon dan ilustrasi pendukung.
+- Countdown banner.
+
+Sediakan fitur upload, preview, replace, dan delete dengan validasi format serta ukuran file.
+
+C. Theme Customization
+
+Sediakan pengaturan:
+
+- Dark Mode.
+- Light Mode.
+- Primary color.
+- Secondary color.
+- Accent color.
+
+Pertahankan konsistensi desain dan keterbacaan pada kedua tema.
+
+D. Asset Architecture
+
+Pisahkan aset visual dari komponen UI.
+
+Gunakan konfigurasi atau database untuk menyimpan referensi aset yang dapat diganti.
+
+Jangan hardcode seluruh URL gambar ke dalam komponen.
+
+Jika Admin mengganti gambar, perubahan harus diterapkan secara konsisten pada halaman terkait.
+
+E. Important Restriction
+
+Jangan mengubah layout atau karakter visual mockup hanya karena ingin membuat desain yang berbeda.
+
+Prioritaskan kesetiaan terhadap referensi, kemudahan penggunaan, dan konsistensi desain.
